@@ -1,30 +1,57 @@
-# terraform-iaac-august-2020
-# Local .terraform directories
-**/.terraform/*
-backend.tf
-# .tfstate files
-*.tfstate
-*.tfstate.*
+### Copy paste the following code 
+```
+module "three_tier" {
+  source                = "../"
+  private_subnet1_range = "10.0.1.0/24"
+  private_subnet2_range = "10.0.2.0/24"
+  private_subnet3_range = "10.0.3.0/24"
+  resource_group_name   = "dev"         #Precreate this while creating Backend Container
+  security_group_name   = "sec_group1"
+  vm1_computername      = "vm1"
+  vm2_computername      = "vm2"
+  vm3_computername      = "vm3"
+  address_space         = "10.0.0.0/16"
+  vnet_name             = "vnet1"
+  location              = "westus2"
+  environment           = "dev"
 
-# Crash log files
-crash.log
+  #OS Information
+  publisher      = "OpenLogic"
+  offer          = "CentOS"
+  sku            = "7.5"
+  version        = "latest"
+  admin_username = "centos"
+  vm_size        = "Standard_DS1_v2"
+  os_version     = "latest"
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
-# version control.
-#
-# example.tfvars
+  tags = {
+    Name        = "VPC_Project"
+    Environment = "Dev"
+    Team        = "DevOps"
+    Department  = "IT"
+    Bill        = "CFO"
+    Quarter     = "3"
+  }
+}
 
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
+```
 
-# Include override files you do wish to add to version control using negated pattern
-#
-# !example_override.tf
+### Copy paste the following code 
 
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-# example: *tfplan*
+```
+output "VM1" {
+  value = "${module.three_tier.VM1} 
+}
+
+output "VM2" {
+  value = "${module.three_tier.VM2} 
+}
+
+output "VM3" {
+ value = "${module.three_tier.VM3}
+}
+
+output "VNET" {
+  value = "${module.three_tier.VNET}
+}
+```
